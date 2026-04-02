@@ -11,10 +11,9 @@ interface Produto {
 export default function Movimentacao() {
   const [produtos, setProdutos] = useState<Produto[]>([])
   const [produtoId, setProdutoId] = useState("")
-  const [tipo, setTipo] = useState("ENTRADA")
+  const [tipo, setTipo] = useState("entrada")
   const [quantidade, setQuantidade] = useState("")
 
-  // ✅ carregar produtos
   useEffect(() => {
     fetch("http://localhost:3001/produtos")
       .then(res => res.json())
@@ -24,21 +23,11 @@ export default function Movimentacao() {
   async function SalvarMovimentacao(e: React.FormEvent) {
     e.preventDefault()
 
-    // ✅ validação antes do fetch
-    if (!produtoId) {
+    if (!produtoId || Number(quantidade) <= 0) {
       Swal.fire({
-        title: 'Atenção!',
-        text: 'Selecione um produto',
-        icon: 'warning'
-      })
-      return
-    }
-
-    if (Number(quantidade) <= 0) {
-      Swal.fire({
-        title: 'Atenção!',
-        text: 'Digite uma quantidade válida',
-        icon: 'warning'
+        title: 'Erro!',
+        text: 'Selecione um produto e informe uma quantidade válida',
+        icon: 'error'
       })
       return
     }
@@ -55,7 +44,6 @@ export default function Movimentacao() {
 
     if (!res.ok) {
       const erro = await res.json()
-
       Swal.fire({
         title: 'Erro!',
         text: erro.message || 'Erro ao movimentar',
@@ -67,64 +55,102 @@ export default function Movimentacao() {
     Swal.fire({
       title: 'Sucesso!',
       text: 'Movimentação realizada com sucesso',
-      icon: 'success',
-      confirmButtonText: 'OK'
+      icon: 'success'
     })
 
-    // ✅ limpar tudo
     setQuantidade("")
     setProdutoId("")
-    setTipo("ENTRADA")
+    setTipo("entrada")
   }
 
   return (
-    <div>
-      <h1>Movimentar Estoque</h1>
+    <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-slate-900 via-blue-900 to-slate-950 px-4 py-10">
+      
+      <div className="max-w-5xl mx-auto flex flex-col items-center">
 
-      <form onSubmit={SalvarMovimentacao}>
-        <select
-          value={produtoId}
-          onChange={(e) => setProdutoId(e.target.value)}
-        >
-          <option style={{ color: 'black' }} value="">
-            Selecione um produto
-          </option>
+        {/* Título */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-extrabold text-white">
+            Movimentar Estoque
+          </h1>
+          <p className="text-gray-300 mt-2">
+            Realize entradas e saídas de produtos no estoque.
+          </p>
+        </div>
 
-          {produtos.map((produto) => (
-            <option
-              style={{ color: 'black' }}
-              key={produto.id}
-              value={produto.id}
+        {/* Card */}
+        <div className="max-w-2xl w-full bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl p-8">
+
+          <form onSubmit={SalvarMovimentacao} className="grid gap-5">
+
+            {/* Produto */}
+            <div>
+              <label className="block text-sm font-medium text-gray-200 mb-2">
+                Produto
+              </label>
+              <select
+                value={produtoId}
+                onChange={(e) => setProdutoId(e.target.value)}
+                className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-white outline-none focus:ring-2 focus:ring-cyan-400"
+              >
+                <option value="" className="text-black">
+                  Selecione um produto
+                </option>
+                {produtos.map((produto) => (
+                  <option
+                    key={produto.id}
+                    value={produto.id}
+                    className="text-black"
+                  >
+                    {produto.nome}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Tipo */}
+            <div>
+              <label className="block text-sm font-medium text-gray-200 mb-2">
+                Tipo de movimentação
+              </label>
+              <select
+                value={tipo}
+                onChange={(e) => setTipo(e.target.value)}
+                className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-white outline-none focus:ring-2 focus:ring-cyan-400"
+              >
+                <option value="entrada" className="text-black">Entrada</option>
+                <option value="saida" className="text-black">Saída</option>
+              </select>
+            </div>
+
+            {/* Quantidade */}
+            <div>
+              <label className="block text-sm font-medium text-gray-200 mb-2">
+                Quantidade
+              </label>
+              <input
+                type="number"
+                placeholder="Ex: 10"
+                value={quantidade}
+                onChange={(e) => setQuantidade(e.target.value)}
+                className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-white placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-cyan-400"
+              />
+            </div>
+
+            {/* Botão */}
+            <button
+              type="submit"
+              className="mt-2 w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 transition duration-300 shadow-lg cursor-pointer"
             >
-              {produto.nome}
-            </option>
-          ))}
-        </select>
+              Movimentar
+            </button>
 
-        <select
-          value={tipo}
-          onChange={(e) => setTipo(e.target.value)}
-        >
-          <option style={{ color: 'black' }} value="entrada">
-            Entrada
-          </option>
-          <option style={{ color: 'black' }} value="saida">
-            Saída
-          </option>
-        </select>
+          </form>
 
-        <input
-          type="number"
-          placeholder="Quantidade..."
-          value={quantidade}
-          onChange={(e) => setQuantidade(e.target.value)}
-          required
-        />
+        </div>
 
-        <button style={{ cursor: "pointer" }} type="submit">
-          Movimentar
-        </button>
-      </form>
+      </div>
+
     </div>
-  );
+  )
 }
