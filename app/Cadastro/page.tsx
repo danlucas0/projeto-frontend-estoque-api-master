@@ -11,7 +11,7 @@ export default function Cadastro() {
     e.preventDefault()
 
     try {
-      const resposta = await fetch('http://localhost:3001/auth/register', {
+      const resposta = await fetch('https://projeto-estoque-api-backend-master.onrender.com/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
