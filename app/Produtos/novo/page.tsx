@@ -119,7 +119,7 @@ export default function NovoProduto() {
     try {
       setSalvando(true)
 
-      const res = await fetch('http://localhost:3001/produtos', {
+      const res = await fetch('https://projeto-estoque-api-backend-master.onrender.com/produtos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

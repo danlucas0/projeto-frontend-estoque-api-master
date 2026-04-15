@@ -11,7 +11,7 @@ export default function Login() {
     e.preventDefault()
 
     try {
-      const resposta = await fetch('http://localhost:3001/auth/login', {
+      const resposta = await fetch('https://projeto-estoque-api-backend-master.onrender.com/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

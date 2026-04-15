@@ -35,7 +35,7 @@ export default function Produtos() {
 
       const token = localStorage.getItem('token')
 
-      const res = await fetch('http://localhost:3001/produtos', {
+      const res = await fetch('https://projeto-estoque-api-backend-master.onrender.com/produtos', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -87,7 +87,7 @@ export default function Produtos() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await fetch(`http://localhost:3001/produtos/${id}`, {
+      const res = await fetch(`https://projeto-estoque-api-backend-master.onrender.com/produtos/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

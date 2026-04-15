@@ -31,7 +31,7 @@ export default function Movimentacao() {
       try {
         setCarregandoProdutos(true)
 
-        const res = await fetch('http://localhost:3001/produtos', {
+        const res = await fetch('https://projeto-estoque-api-backend-master.onrender.com/produtos', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -147,7 +147,7 @@ export default function Movimentacao() {
     try {
       setSalvando(true)
 
-      const res = await fetch('http://localhost:3001/movimentacoes', {
+      const res = await fetch('https://projeto-estoque-api-backend-master.onrender.com/movimentacoes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
