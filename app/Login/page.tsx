@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import Swal from 'sweetalert2'
 
 export default function Login() {
@@ -57,9 +58,9 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-950 flex items-center justify-center px-4 py-6">
       <div className="w-full max-w-md">
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl rounded-2xl p-8">
+        <div className="relative bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl rounded-2xl p-8">
           <div className="mb-8 text-center">
             <h1 className="text-4xl font-extrabold text-white">Bem-vindo</h1>
             <p className="text-gray-200 mt-2">
@@ -77,7 +78,8 @@ export default function Login() {
                 placeholder="Digite seu email..."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-gray-300 px-4 py-3 outline-none focus:ring-2 focus:ring-cyan-400"
+                autoComplete="email"
+                className="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-gray-300 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-cyan-400"
               />
             </div>
 
@@ -90,13 +92,14 @@ export default function Login() {
                 placeholder="Digite sua senha..."
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-gray-300 px-4 py-3 outline-none focus:ring-2 focus:ring-cyan-400"
+                autoComplete="current-password"
+                className="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-gray-300 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-cyan-400"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 transition duration-300 shadow-lg cursor-pointer"
+              className="relative z-10 w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 transition duration-300 shadow-lg cursor-pointer touch-manipulation active:scale-[0.99]"
             >
               Entrar
             </button>
@@ -104,12 +107,12 @@ export default function Login() {
 
           <p className="text-center text-sm text-gray-300 mt-6">
             Não tem conta?{' '}
-            <a
+            <Link
               href="/Cadastro"
-              className="text-cyan-300 hover:text-cyan-200 font-semibold underline"
+              className="text-cyan-300 hover:text-cyan-200 font-semibold underline inline-block px-1 py-1 relative z-10 touch-manipulation"
             >
               Cadastre-se
-            </a>
+            </Link>
           </p>
 
           <p className="text-center text-sm text-gray-300 mt-6">
