@@ -7,9 +7,14 @@ import Swal from 'sweetalert2'
 export default function Login() {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+  const [loading, setLoading] = useState(false)
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
+    if (loading) return
+
+    setLoading(true)
 
     try {
       const resposta = await fetch('https://projeto-estoque-api-backend-master.onrender.com/auth/login', {
@@ -54,6 +59,8 @@ export default function Login() {
         title: 'Erro de conexão',
         text: 'Não foi possível conectar com o servidor.',
       })
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -79,7 +86,8 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
-                className="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-gray-300 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-cyan-400"
+                disabled={loading}
+                className="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-gray-300 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
 
@@ -93,15 +101,24 @@ export default function Login() {
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
                 autoComplete="current-password"
-                className="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-gray-300 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-cyan-400"
+                disabled={loading}
+                className="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-gray-300 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
 
             <button
               type="submit"
-              className="relative z-10 w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 transition duration-300 shadow-lg cursor-pointer touch-manipulation active:scale-[0.99]"
+              disabled={loading}
+              className={`relative z-10 w-full rounded-xl font-bold py-3 transition duration-300 shadow-lg touch-manipulation flex items-center justify-center gap-2 ${
+                loading
+                  ? 'bg-slate-500 text-white cursor-not-allowed opacity-80'
+                  : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 cursor-pointer active:scale-[0.99]'
+              }`}
             >
-              Entrar
+              {loading && (
+                <span className="h-5 w-5 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+              )}
+              {loading ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
 
@@ -109,7 +126,9 @@ export default function Login() {
             Não tem conta?{' '}
             <Link
               href="/Cadastro"
-              className="text-cyan-300 hover:text-cyan-200 font-semibold underline inline-block px-1 py-1 relative z-10 touch-manipulation"
+              className={`text-cyan-300 hover:text-cyan-200 font-semibold underline inline-block px-1 py-1 relative z-10 touch-manipulation ${
+                loading ? 'pointer-events-none opacity-50' : ''
+              }`}
             >
               Cadastre-se
             </Link>
